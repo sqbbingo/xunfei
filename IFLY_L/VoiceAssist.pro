@@ -18,8 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
         micaudio.cpp \
-    iflyvoice.cpp \
-    WaveRecorder.cpp
+    iflyvoice.cpp
 
 HEADERS  += mainwindow.h \
         micaudio.h \
@@ -28,12 +27,10 @@ HEADERS  += mainwindow.h \
     msp_errors.h \
     msp_types.h \
     qisr.h \
-    qtts.h \
-    WaveRecorder.h
+    qtts.h
 
 FORMS    += mainwindow.ui
 
-# 添加讯飞语音链接库
-LIBS += "$$PWD/msc.dll"
+# 添加讯飞语音链接�LIBS += "$$PWD/msc.dll"
 
 LIBS += -L$$PWD/./ -lwinmm

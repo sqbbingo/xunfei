@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,19 +42,21 @@ void MainWindow::showCurrVolume(int volume)
 {
     // 当音量大于1000时，开始录音
     if(volume>1000&&(!recStatus)){
-        wRecorder.set_FileName("audio.wav");
-        wRecorder.Start();
+//        wRecorder.set_FileName("audio.wav");
+//        wRecorder.Start();
+        mic->start();
         qDebug()<<"开始录音"<<volume;
         recStatus = true;
     }
 
     // 当音量小于50时，停止录音
     if(volume<500&&recStatus){
-        wRecorder.Stop();
-        wRecorder.Reset();
+//        wRecorder.Stop();
+        mic->stop();
+//        wRecorder.Reset();
         qDebug()<<"停止录音"<<volume;
         recStatus = false;
-        mVoice->speech2Text("audio.wav",1,NULL);
+        mVoice->speech2Text("C:/Users/bingo/Desktop/cn_sentence.wav",1,NULL);
     }
     ui->volume->setValue(volume);
 }
@@ -61,4 +64,10 @@ void MainWindow::showCurrVolume(int volume)
 void MainWindow::showRecText(QString text)
 {
     ui->recText->setText(text);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName();
+    ui->lineEdit->setText(fileName);
 }

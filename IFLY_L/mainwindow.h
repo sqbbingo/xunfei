@@ -23,6 +23,8 @@ private slots:
     void showCurrVolume(int volume);
     void showRecText(QString text);
 
+    void on_pushButton_clicked();
+
 private:
     bool recStatus;
 
@@ -30,7 +32,7 @@ private:
     Ui::MainWindow *ui;
     MicAudio *mic;
     iFlyVoice *mVoice;
-    WaveRecorder wRecorder;
+//    WaveRecorder wRecorder;
 };
 
 #endif // MAINWINDOW_H

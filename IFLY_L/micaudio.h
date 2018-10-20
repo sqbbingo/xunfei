@@ -40,6 +40,7 @@
 #include <QByteArray>
 #include <QIODevice>
 #include <QObject>
+class QAudioRecorder; //添加录音类
 
 class MicAudio: public QObject
 {
@@ -49,23 +50,38 @@ public:
 
 // 公有函数，供外部调用
 public:
-    void startListen();
-    void stopListen();
+    void startListen();                     //开始监听
+    void stopListen();                      //停止监听
+    void set_FileName(QString des_path);    //设置需要保存的文件
+    void start();                           //初始化并开始录音
+    void stop();                            //结束录音并做结尾
+    void reset();                           //参数重设
 
 // 音频类型的私有成员
 private:
     QAudioInput *mic;
     QIODevice *micSound;
+    QAudioRecorder *audioRecorder;
 
 // 一般类型私有成员
 private:
     int micVolume;
     QByteArray mBuffer;
 
+//录音使用到的参数
+private:
+    bool bSaveFile;                                 //是否存储文件
+
+    /* wav音频裸数据放在公有变量 */
+    QString dest_path;								// 存储路径
+    FILE* fp = NULL;								// wave文件指针
+
+
 // 私有槽函数
 private slots:
     void calcVolume();
     void showVolume();
+//    void updateProgress(qint64 duration);//用于显示录音时间
 
 // 信号函数
 signals:

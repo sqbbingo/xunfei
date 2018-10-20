@@ -1,6 +1,8 @@
 #include "micaudio.h"
 #include <QDebug>
 #include <QTimer>
+#include <QAudioRecorder>
+#include <QFileDialog>
 
 #define bufferSize 4096
 
@@ -20,6 +22,18 @@ MicAudio::MicAudio():mBuffer(bufferSize,0)         // 初始化mBuffer的size为
     }
     // 初始化mic
     mic = new QAudioInput(micDevice,format,this);
+
+    //录音文件
+    audioRecorder = new QAudioRecorder;
+    //QStringList inputs = audioRecorder->audioInput();
+
+    QAudioEncoderSettings audioSettings;
+    audioSettings.setCodec("audio/pcm");
+    audioSettings.setQuality(QMultimedia::HighQuality);
+    //audioSettings.setbitRate();
+    audioSettings.setChannelCount(1);                   //声道数
+    audioSettings.setSampleRate(1600);                  //每秒采样率
+    audioRecorder->setAudioSettings(audioSettings);
 }
 
 
@@ -35,6 +49,32 @@ void MicAudio::stopListen()
 {
     mic->stop();
     disconnect(micSound,SIGNAL(readyRead()),this,SLOT(calcVolume()));
+}
+
+void MicAudio::set_FileName(QString Target)
+{
+    //若启用存档则保存一个wav文件
+    bSaveFile = true;
+    dest_path = Target;
+//    errno_t err = fopen_s(&fp,dest_path.c_str(),'wb');
+//    if(err > 0)
+//    {
+//        qDebug()<<"文件创建失败";
+//        bSaveFile = false;
+//    }
+
+}
+
+void MicAudio::start()
+{
+    audioRecorder->setAudioInput(audioRecorder->audioInput());
+    audioRecorder->setOutputLocation(QUrl::fromLocalFile("/home/bingo/下载/a"));
+    audioRecorder->record();
+}
+
+void MicAudio::stop()
+{
+    audioRecorder->stop();
 }
 
 
